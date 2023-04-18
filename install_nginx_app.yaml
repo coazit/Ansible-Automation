@@ -1,7 +1,7 @@
 # Este es nuestro primerplaybook
 - name: "primera play"
   hosts: all
-  gather_facts: false
+  gather_facts: true
 
   tasks:
   - name: "comprobar conexion"
@@ -11,13 +11,20 @@
 - name: "segunda play"
   become: yes
   hosts: servidor_web
-  gather_facts: false
+  gather_facts: true
   vars:
     state: latest
 
   tasks:
   - name: "listar directorios"
     command: ls
+    register: contenido
+  
+  - name: "comprobar ficheros"
+    debug:
+      msg: "El directorio no esta vacio"
+    when: contenido.stdout != ""
+
 
   - name: "instalar Nginx"
     apt: name=nginx state={{state}}
