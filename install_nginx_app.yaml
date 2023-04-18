@@ -1,0 +1,30 @@
+# Este es nuestro primerplaybook
+- name: "primera play"
+  hosts: all
+  gather_facts: false
+
+  tasks:
+  - name: "comprobar conexion"
+    ping:
+      data: funcionando
+
+- name: "segunda play"
+  become: yes
+  hosts: servidor_web
+  gather_facts: false
+  vars:
+    state: latest
+
+  tasks:
+  - name: "listar directorios"
+    command: ls
+
+  - name: "instalar Nginx"
+    apt: name=nginx state={{state}}
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+[servidor_web]
+192.168.18.110
+
+[bbdd]
+bbdd1 ansible_host=192.168.18.120
+
+[aplicacion:children]
+servidor_web
+bbdd
