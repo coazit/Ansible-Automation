@@ -21,12 +21,15 @@
 
   - name: "instalar Nginx"
     apt: name=nginx state={{state}}
+    notify: restart nginx
 
-    
+  - name: "copiar index en app" 
+    copy:
+      src: index.html
+      dest: /var/www/html
 
-
-
-
-
-
-
+  handlers:
+  - name: "restart nginx"
+    service: 
+      name: nginx
+      state: restarted
