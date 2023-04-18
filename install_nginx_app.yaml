@@ -22,6 +22,8 @@
   - name: "instalar Nginx"
     apt: name=nginx state={{state}}
 
+    
+
 
 
 
