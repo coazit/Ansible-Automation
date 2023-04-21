@@ -11,6 +11,7 @@
 - name: "segunda play"
   become: yes
   hosts: servidor_web
+  tags: segunda_play
   gather_facts: true
   vars:
     state: latest
@@ -19,6 +20,9 @@
   - name: "listar directorios"
     command: ls
     register: contenido
+    tags: 
+      - listar
+    ignore_errors: yes
   
   - name: "comprobar ficheros"
     debug:
@@ -34,6 +38,32 @@
     copy:
       src: index.html
       dest: /var/www/html
+
+- name: "tercera play"
+  hosts: all
+  become: yes
+  tags: tercera_play
+  vars:
+    version: "5.14"
+    servidor: "Ubuntu"
+    coches: ['Mercedes', 'Nissan', 'Toyota']
+  
+  tasks:
+  - name: "Imprimir template"
+    template:
+      src: template_1.j2
+      dest: /home/ansible/archivo_1.txt
+
+  - name: "Loop templates"
+    template:
+      src: template_2.j2
+      dest: /home/ansible/archivo_2.txt
+
+  - name: "Mostrar un nuevo fichero"
+    template:
+      src: template_3.j2
+      dest: /var/www/html/index.html
+      mode: 0755
 
   handlers:
   - name: "restart nginx"
