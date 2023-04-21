@@ -17,18 +17,26 @@
     state: latest
 
   tasks:
-  - name: "listar directorios"
-    command: ls
-    register: contenido
-    tags: 
-      - listar
-    ignore_errors: yes
+  - name: "listar directorios y comprobar ficheros"
+    block:
+      - name: "Listar Directorios" 
+        command: ls
+        register: contenido
+        tags: 
+        - listar
+        ignore_errors: yes
   
-  - name: "comprobar ficheros"
-    debug:
-      msg: "El directorio no esta vacio"
-    when: contenido.stdout != ""
-
+      - name: "comprobar ficheros"
+        debug:
+          msg: "El directorio no esta vacio"
+        when: contenido.stdout != ""
+    rescue:
+      - name: "Listar Directorios"
+        command: ls
+    always:
+      - name: "Mensaje de always"      
+        debug:
+          msg: "Este codigo se ejecuta siempre"
 
   - name: "instalar Nginx"
     apt: name=nginx state={{state}}
@@ -40,7 +48,7 @@
       dest: /var/www/html
 
 - name: "tercera play"
-  hosts: all
+  hosts: servidor_web
   become: yes
   tags: tercera_play
   vars:
