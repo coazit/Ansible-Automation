@@ -1,5 +1,6 @@
 # Este es nuestro primerplaybook
 - name: "primera play"
+  become: yes
   hosts: all
   gather_facts: true
 
@@ -7,6 +8,25 @@
   - name: "comprobar conexion"
     ping:
       data: funcionando
+
+  - name: "Imprimir Items"
+    command: echo "{{item}}"
+    loop:
+      - uno
+      - dos
+  - name: "Listar Inventario"
+    debug:
+      msg: "{{item}}"
+    loop: "{{groups['all']}}"
+
+  - name: crear usuarios
+    user:
+      name: "{{item.name}}"
+      state: absent
+      groups: "{{item.groups}}"
+    loop:
+      - {name: 'user1',groups: 'sudo' }
+      - {name: 'user2',groups: 'sudo' }
 
 - name: "segunda play"
   become: yes
