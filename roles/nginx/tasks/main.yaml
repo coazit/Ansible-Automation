@@ -1,0 +1,15 @@
+---
+  - name: "instalar Nginx"
+    apt: name=nginx state={{state}}
+    notify: restart nginx
+
+  - name: "crear index" 
+    template:
+      src: template_3.j2
+      dest: /var/www/html/index.html
+      mode: "0755"
+
+  - name: "copiar script"
+    copy:
+      src: simple_script.sh
+      dest: /tmp/script.sh

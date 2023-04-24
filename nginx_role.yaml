@@ -1,0 +1,5 @@
+---
+- hosts: servidor_web
+  become: yes
+  roles:
+    - nginx
