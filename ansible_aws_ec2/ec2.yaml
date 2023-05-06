@@ -1,0 +1,32 @@
+---
+- name: Create a new demo EC
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    region: us-east-1
+    instance_type: t2.nano
+    ami: ami-0889a44b331db0194
+    keypar: ssh_ec2_linux
+    subnetid: subnet-0d05b2cdd65823455
+  
+  tasks:
+    - name: Create an EC" instance
+      ec2_instance:
+        key_name: "{{keypar}}"
+        security_group: default
+        instance_type: "{{instance_type}}"
+        image_id : "{{ami}}"
+        region: "{{region}}"
+        count: 1
+        tags:
+          ansible_course: ansible_AWS
+        vpc_subnet_id: "{{subnetid}}"
+        network:
+          assign_public_ip: yes
+      register: ec2
+
+    - name: show output
+      debug: 
+        msg: "{{ec2}}"
